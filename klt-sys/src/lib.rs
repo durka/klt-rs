@@ -1,5 +1,5 @@
 extern crate libc;
-use std::os::raw::{c_int, c_char, c_uchar, c_float};
+use std::os::raw::{c_int, c_char, c_uchar, c_float, c_void};
 pub use libc::FILE;
 
 // types
@@ -54,6 +54,17 @@ rec! {
         bordery: c_int,
         n_pyramid_levels: c_int,
         subsampling: c_int,
+
+        affine_window_width: c_int, affine_window_height: c_int,
+        affine_consistency_check: c_int,
+        affine_max_iterations: c_int,
+        affine_max_residue: c_float,
+        affine_min_displacement: c_float,
+        affine_max_displacement_differ: c_float,
+
+        pyramid_last: *mut c_void,
+        pyramid_last_gradx: *mut c_void,
+        pyramid_last_grady: *mut c_void,
     }
 }
 
@@ -84,7 +95,7 @@ rec! {
 
 rec! {
     FeatureHistory: FeatureHistoryRec {
-        n_features: c_int,
+        n_frames: c_int,
         feature: *mut Feature,
     }
 }
@@ -138,8 +149,8 @@ extern "C" {
     pub fn KLTWriteFeatureHistory(fh: FeatureHistory, filename: *const c_char, fmt: *const c_char);
     pub fn KLTWriteFeatureTable(ft: FeatureTable, filename: *const c_char, fmt: *const c_char);
     pub fn KLTReadFeatureList(fl: FeatureList, filename: *const c_char) -> FeatureList;
-    pub fn KLTReadFeatureHistory(filename: *const c_char) -> FeatureHistory;
-    pub fn KLTReadFeatureTable(filename: *const c_char) -> FeatureTable;
+    pub fn KLTReadFeatureHistory(fh: FeatureHistory, filename: *const c_char) -> FeatureHistory;
+    pub fn KLTReadFeatureTable(ft: FeatureTable, filename: *const c_char) -> FeatureTable;
 
     // util
     pub fn _KLTCreateFloatImage(ncols: c_int, nrows: c_int) -> FloatImage;
@@ -149,7 +160,7 @@ extern "C" {
     pub fn _KLTWriteAbsFloatImageToPGM(img: FloatImage, filename: *const c_char, scale: c_float);
 
     // pgm
-    pub fn pgmReadFile(fname: *const c_char, img: *const c_uchar, ncols: *mut c_int, nrows: *mut c_int) -> *mut c_uchar;
+    pub fn pgmReadFile(fname: *const c_char, img: *mut c_uchar, ncols: *mut c_int, nrows: *mut c_int) -> *mut c_uchar;
     pub fn pgmWriteFile(fname: *const c_char, img: *const c_uchar, ncols: c_int, nrows: c_int);
     pub fn ppmWriteFileRGB(fname: *const c_char, redimg: *const c_uchar, greenimg: *const c_uchar, blueimg: *const c_uchar, ncols: c_int, nrows: c_int);
     pub fn pgmRead(fp: *const FILE, img: *const c_uchar, ncols: *mut c_int, nrows: *mut c_int) -> *mut c_uchar;

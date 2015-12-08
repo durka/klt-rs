@@ -13,8 +13,8 @@ pub unsafe fn unsafe_main() {
 
     let mut ncols = 0;
     let mut nrows = 0;
-    let img1 = klt::pgmReadFile(s!("img0.pgm"), ptr::null(), &mut ncols, &mut nrows);
-    let img2 = klt::pgmReadFile(s!("img1.pgm"), ptr::null(), &mut ncols, &mut nrows);
+    let img1 = klt::pgmReadFile(s!("img0.pgm"), ptr::null_mut(), &mut ncols, &mut nrows);
+    let img2 = klt::pgmReadFile(s!("img1.pgm"), ptr::null_mut(), &mut ncols, &mut nrows);
 
     klt::KLTSelectGoodFeatures(tc, img1, ncols, nrows, fl);
 

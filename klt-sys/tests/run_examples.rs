@@ -74,13 +74,15 @@ fn cd(comps: &[&str]) -> io::Result<PathBuf> {
 
 mod example1;
 mod example2;
+mod example3;
+mod example4;
 
 fn do_example(bin: &str, inputs: &[&str], outputs: &[&str], f: unsafe fn()) {
     let prev = cd(&["..", "lib", "klt"]).complain("could not chdir to klt dir");
 
     Command::new(bin).status().complain("C example failed");
 
-    env::set_current_dir(prev).complain("could not chdir to root dir");
+    env::set_current_dir(&prev).complain("could not chdir to root dir");
     cd(&[]).complain("could not chdir to tests dir");
 
     for f in inputs {
@@ -94,6 +96,8 @@ fn do_example(bin: &str, inputs: &[&str], outputs: &[&str], f: unsafe fn()) {
     for f in outputs {
         diff(f).complain("could not compare outputs");
     }
+
+    env::set_current_dir(&prev).complain("could not chdir to root dir");
 }
 
 #[test]
@@ -102,5 +106,30 @@ fn ex1() {
                &["img0.pgm", "img1.pgm"],
                &["feat1.ppm", "feat2.ppm", "feat1.txt", "feat2.txt", "feat2.fl"],
                example1::unsafe_main);
+}
+
+#[test]
+fn ex2() {
+    do_example("./example2",
+               &["img0.pgm", "img1.pgm"],
+               &["feat1.ppm", "feat2.ppm", "feat1.txt", "feat2.txt"],
+               example2::unsafe_main);
+}
+
+#[test]
+fn ex3() {
+    do_example("./example3",
+               &["img0.pgm", "img1.pgm", "img2.pgm", "img3.pgm", "img4.pgm", "img5.pgm", "img6.pgm", "img7.pgm", "img8.pgm", "img9.pgm"],
+               &["feat0.ppm", "feat1.ppm", "feat2.ppm", "feat3.ppm", "feat4.ppm", "feat5.ppm", "feat6.ppm", "feat7.ppm", "feat8.ppm", "feat9.ppm",
+                 "features.txt", "features.ft"],
+               example3::unsafe_main);
+}
+
+#[test]
+fn ex4() {
+    do_example("./example4",
+               &[], // uses features.txt from previous test
+               &["feat1.txt", "ft2.txt", "ft3.txt"],
+               example4::unsafe_main);
 }
 
