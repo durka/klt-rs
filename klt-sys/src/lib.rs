@@ -10,6 +10,9 @@ pub type Bool      = c_int;
 
 // structs
 
+/// Define a struct and a type alias which is a mutable raw pointer to it
+///
+/// The struct will be #[repr(C)] and all members made pub
 macro_rules! rec {
     ($name:ident: $recname:ident { $($elname:ident: $eltype:ty),* $(,)* }) => {
         #[repr(C)]

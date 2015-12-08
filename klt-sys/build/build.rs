@@ -3,10 +3,12 @@ use std::process::{Command, Stdio};
 use std::fs::File;
 use std::fmt::Display;
 
+/// convenience function to print a Cargo metadata pair
 fn print_meta<A: Display, B: Display>(key: A, val: B) {
     println!("cargo:{}={}", key, val);
 }
 
+/// convenience macro to print a Cargo metadata pair with formatting in the value
 macro_rules! format_meta {
     ($key:expr, $($val:tt)*) => {
         print_meta($key, format!($($val)*))
@@ -14,11 +16,13 @@ macro_rules! format_meta {
 }
 
 #[cfg(not(unix))]
+/// KLT only works on *nix
 fn build_klt() {
     panic!("Unix only");
 }
 
 #[cfg(unix)]
+/// Build KLT library dependency and print relevant metadata
 fn build_klt() {
     const NAME: &'static str = "klt";
     const DIR: &'static str = "lib/klt";

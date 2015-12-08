@@ -1,3 +1,8 @@
+//! Tests for the KLT dependency
+//! 
+//! The Rust tests are direct translations of the C examples. The same input files are used and the
+//! outputs are checked for consistency with C.
+
 extern crate klt_sys as klt;
 use std::process::Command;
 use std::env;
@@ -6,19 +11,23 @@ use std::io::{self, Read};
 use std::path::{Path, PathBuf};
 use std::fmt::{Display, Debug};
 
+/// Munge a string literal for sending to C
 macro_rules! s {
     ($s:expr) => {
         concat!($s, "\0").as_ptr() as *const raw::c_char
     }
 }
 
+/// Index into an array of T, stored in a struct as *mut T
 macro_rules! idx {
-    ($strukt:ident . $arr:ident [ $idx:expr, $n:ident ] . $member:ident) => {
-        (*slice::from_raw_parts($strukt.$arr, $strukt.$n as usize)[$idx as usize]).$member
+    ($strukt:ident . $arr:ident [ $idx:expr, $len:ident ] . $member:ident) => {
+        (*slice::from_raw_parts($strukt.$arr, $strukt.$len as usize)[$idx as usize]).$member
     }
 }
 
+/// Extension trait for Result and Option
 trait Complain<T> {
+    /// Like `expect()` but passes on the error if there is one
     fn complain<M: Display>(self, msg: M) -> T;
 }
 
@@ -36,6 +45,7 @@ impl<T> Complain<T> for Option<T> {
     }
 }
 
+/// Copy a file from ../lib/klt to .
 fn cp(name: &str) -> io::Result<()> {
     println!("copying {}", name);
 
@@ -43,6 +53,7 @@ fn cp(name: &str) -> io::Result<()> {
     Ok(())
 }
 
+/// Diff a file with the version in ../lib/klt (panics if they are not equal)
 fn diff(name: &str) -> io::Result<()> {
     println!("diffing {}", name);
     
@@ -59,6 +70,7 @@ fn diff(name: &str) -> io::Result<()> {
     Ok(())
 }
 
+/// Change directory relative to current file
 fn cd(comps: &[&str]) -> io::Result<PathBuf> {
     let prev = env::current_dir().complain("no current dir");
     let mut p = Path::new(file!()).parent().complain("filename has no parent dir").to_owned();
@@ -78,26 +90,32 @@ mod example3;
 mod example4;
 mod example5;
 
+/// Test a Rust example against a C example
 fn do_example(bin: &str, inputs: &[&str], outputs: &[&str], f: unsafe fn()) {
+    // first run the C example (to get the output files)
     let prev = cd(&["..", "lib", "klt"]).complain("could not chdir to klt dir");
-
     Command::new(bin).status().complain("C example failed");
 
+    // back to tests dir
     env::set_current_dir(&prev).complain("could not chdir to root dir");
     cd(&[]).complain("could not chdir to tests dir");
 
+    // copy in the input files
     for f in inputs {
         cp(f).complain("could not copy in test images");
     }
 
+    // run the Rust example
     unsafe {
         f();
     }
 
+    // diff the output files
     for f in outputs {
         diff(f).complain("could not compare outputs");
     }
 
+    // clean up by returning to original directory
     env::set_current_dir(&prev).complain("could not chdir to root dir");
 }
 
