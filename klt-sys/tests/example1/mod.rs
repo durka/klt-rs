@@ -20,7 +20,7 @@ pub unsafe fn unsafe_main() {
 
     println!("In first image:");
     for i in 0..flr.n_features {
-        println!("Feature #{}:  ({},{}) with value of {}",
+        println!("Feature #{}:  ({:#.6},{:#.6}) with value of {}",
                  i, idx!(flr.feature[i, n_features].x), idx!(flr.feature[i, n_features].y),
                  idx!(flr.feature[i, n_features].val));
     }
@@ -32,7 +32,7 @@ pub unsafe fn unsafe_main() {
 
     println!("\nIn second image:");
     for i in 0..flr.n_features {
-        println!("Feature #{}:  ({},{}) with value of {}\n",
+        println!("Feature #{}:  ({:#.6},{:#.6}) with value of {}",
                  i, idx!(flr.feature[i, n_features].x), idx!(flr.feature[i, n_features].y),
                  idx!(flr.feature[i, n_features].val));
     }

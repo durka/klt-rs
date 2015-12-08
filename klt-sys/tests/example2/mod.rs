@@ -1,5 +1,5 @@
 use klt;
-use std::{ptr, slice};
+use std::ptr;
 use std::os::raw;
 
 
@@ -9,7 +9,6 @@ pub unsafe fn unsafe_main() {
     let tc = klt::KLTCreateTrackingContext();
     klt::KLTPrintTrackingContext(tc);
     let fl = klt::KLTCreateFeatureList(n_features);
-    let flr = &mut *fl;
 
     let mut ncols = 0;
     let mut nrows = 0;

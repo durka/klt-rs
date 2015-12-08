@@ -1,5 +1,5 @@
 use klt;
-use std::{ptr, slice};
+use std::ptr;
 use std::os::raw;
 use std::ffi::CString;
 
@@ -13,8 +13,6 @@ pub unsafe fn unsafe_main() {
     let fl = klt::KLTCreateFeatureList(n_features);
     let ft = klt::KLTCreateFeatureTable(n_frames, n_features);
     let tcr = &mut *tc;
-    let flr = &mut *fl;
-    let ftr = &mut *ft;
 
     tcr.sequential_mode = true as klt::Bool;
     tcr.write_internal_images = false as klt::Bool;
