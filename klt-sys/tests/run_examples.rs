@@ -76,6 +76,7 @@ mod example1;
 mod example2;
 mod example3;
 mod example4;
+mod example5;
 
 fn do_example(bin: &str, inputs: &[&str], outputs: &[&str], f: unsafe fn()) {
     let prev = cd(&["..", "lib", "klt"]).complain("could not chdir to klt dir");
@@ -131,5 +132,13 @@ fn ex4() {
                &[], // uses features.txt from previous test
                &["feat1.txt", "ft2.txt", "ft3.txt"],
                example4::unsafe_main);
+}
+
+#[test]
+fn ex5() {
+    do_example("./example5",
+               &["img0.pgm", "img2.pgm"],
+               &["feat1b.ppm", "feat2b.ppm"],
+               example5::unsafe_main);
 }
 
