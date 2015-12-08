@@ -1,0 +1,9 @@
+[package]
+name = "klt-sys"
+version = "0.1.0"
+authors = ["Alex Burka <aburka@seas.upenn.edu>"]
+build = "build/build.rs"
+
+[dependencies]
+libc = "0.2"
+
