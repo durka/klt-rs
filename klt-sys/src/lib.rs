@@ -166,7 +166,7 @@ extern "C" {
     pub fn pgmReadFile(fname: *const c_char, img: *mut c_uchar, ncols: *mut c_int, nrows: *mut c_int) -> *mut c_uchar;
     pub fn pgmWriteFile(fname: *const c_char, img: *const c_uchar, ncols: c_int, nrows: c_int);
     pub fn ppmWriteFileRGB(fname: *const c_char, redimg: *const c_uchar, greenimg: *const c_uchar, blueimg: *const c_uchar, ncols: c_int, nrows: c_int);
-    pub fn pgmRead(fp: *const FILE, img: *const c_uchar, ncols: *mut c_int, nrows: *mut c_int) -> *mut c_uchar;
+    pub fn pgmRead(fp: *const FILE, img: *mut c_uchar, ncols: *mut c_int, nrows: *mut c_int) -> *mut c_uchar;
     pub fn pgmWrite(fp: *const FILE, img: *const c_uchar, ncols: c_int, nrows: c_int);
     pub fn ppmWrite(fp: *const FILE, redimg: *const c_uchar, greenimg: *const c_uchar, blueimg: *const c_uchar, ncols: c_int, nrows: c_int);
 }
