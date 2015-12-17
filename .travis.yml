@@ -3,9 +3,14 @@ sudo: false
 matrix:
   include:
     - rust: stable
+      env:
+       - RUST_TEST_THREADS=1
     - rust: beta
+      env:
+       - RUST_TEST_THREADS=1
     - rust: nightly
       env:
+       - RUST_TEST_THREADS=1
        - FEATURES=
        - BENCH=
 branches:
