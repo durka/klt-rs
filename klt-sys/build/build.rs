@@ -2,6 +2,7 @@ use std::process::{Command, Stdio};
 #[cfg(unix)]use std::os::unix::io::{AsRawFd, FromRawFd};
 use std::fs::File;
 use std::fmt::Display;
+use std::env;
 
 /// convenience function to print a Cargo metadata pair
 fn print_meta<A: Display, B: Display>(key: A, val: B) {
@@ -41,7 +42,7 @@ fn build_klt() {
     }
 
     format_meta!("rustc-link-lib", "static={}", NAME);
-    print_meta("rustc-link-search", DIR);
+    format_meta!("rustc-link-search", "{}/{}", env::var("CARGO_MANIFEST_DIR").unwrap(), DIR);
 }
 
 fn main() {
