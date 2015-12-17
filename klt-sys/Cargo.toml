@@ -1,7 +1,13 @@
 [package]
 name = "klt-sys"
 version = "0.1.0"
+
+description = "Low-level wrapper for Kanade-Lucas-Tomasi feature tracker"
+license = "MIT"
 authors = ["Alex Burka <aburka@seas.upenn.edu>"]
+homepage = "https://github.com/durka/klt-rs"
+repository = "https://github.com/durka/klt-rs"
+
 build = "build/build.rs"
 
 [dependencies]
