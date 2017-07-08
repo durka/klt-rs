@@ -37,7 +37,7 @@ all:  lib $(EXAMPLES:.c=)
 .c.o:
 	$(CC) -c $(CFLAGS) $<
 
-lib: $(ARCH:.c=.o)
+libklt.a: $(ARCH:.c=.o)
 	rm -f libklt.a
 	ar ruv libklt.a $(ARCH:.c=.o)
 	rm -f *.o
