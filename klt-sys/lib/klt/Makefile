@@ -32,7 +32,7 @@ LIB = -L/usr/local/lib -L/usr/lib
 
 .SUFFIXES:  .c .o
 
-all:  lib $(EXAMPLES:.c=)
+all:  libklt.a $(EXAMPLES:.c=)
 
 .c.o:
 	$(CC) -c $(CFLAGS) $<
